@@ -2,6 +2,7 @@ from datetime import datetime
 import mysql.connector
 import config
 import config1
+import config3
 import smtplib
 from twilio.rest import Client
 
@@ -21,22 +22,25 @@ def check_phone(number):
 def giveDb():
 	mydb = mysql.connector.connect(
 		host="localhost",
-		user="root",
-		passwd="root"	,
-		database="innov"			#your mysql Password
+		user=config3.user, 
+		passwd=config3.passwd,	
+		database="innov"			
 	)
 	return mydb
 
-
+#adds information to database
 def add_to_db(email,name,phone,address,checkin,host_name,host_email,host_phone):
 	mydb = giveDb()
 	mycursor = mydb.cursor()
+	#adds into visitor
 	query = "Insert Into visitor (email,name,contact)  values (%s,%s,%s)"
 	values = (email,name,phone)
 	mycursor.execute(query,values)
+	#adds into host
 	query_host = "Insert into host (email, name, contact) values (%s, %s, %s)"
 	values_host = (host_email,host_name,host_phone)
 	mycursor.execute(query_host,values_host)
+	#adds into entryManagement
 	queryA = "Insert into entryManagement (host_email, guest_email, checkin, checkout) values(%s,%s,%s,%s)"
 	valuesA = (host_email,email,checkin,None)
 	mycursor.execute(queryA,valuesA)
@@ -81,6 +85,7 @@ def add_visitor():
 	visitor_email = input("Enter email: ")
 	name = input ("Enter name: ")
 	phone = input("Enter 10 digit phone number: ")
+	#check if phone number is 10 digit numerical or not
 	if check_phone(phone) == False :
 		print("Enter a valid phone number: ")
 		phone =  input("Enter 10 digit phone number: ")
@@ -93,7 +98,8 @@ def add_visitor():
 	host_name = input("Enter host_name: ")
 	host_email = input("Enter host_email: ")
 	host_phone = input("Enter host_phone_number: ")
-
+	
+	#creating message to send
 	message = "Visitor Details\n"
 	message = message + "Name: " + name + "\n"
 	message = message + "Email: " + visitor_email + "\n"
@@ -105,25 +111,29 @@ def add_visitor():
 	host_phone = "+91"+host_phone
 	send_sms(message, host_phone)
 
-
+#for checkout purpose
 def get_visitor(email, checkout_time):
 	send_data = []
 	mydb = giveDb()
 	mycursor = mydb.cursor()
-
+	
+	#inputs checkout time
 	qx = "update entryManagement set checkout = %s where guest_email = %s;"
 	z = (checkout_time, email)
 	mycursor.execute(qx,z)
 	mydb.commit()
-
+	
+	#getting data from entryManagement
 	query = "Select * from entryManagement where guest_email = %s;"
 	mycursor.execute(query,(email,))
 	record = mycursor.fetchone()
 	
+	#getting data from visitor
 	queryB = "Select * from visitor where email = %s"
 	mycursor.execute(queryB,(email,))
 	record2 = mycursor.fetchone()
 	
+	#getting data from host
 	queryC = "Select * from host where email=%s"
 	mycursor.execute(queryC,(record[0],))
 	record3 = mycursor.fetchone()
@@ -142,10 +152,7 @@ def check_out():
 	dt_string = checkout_time.strftime("%Y-%m-%d %H:%M:%S")
 	get_visitor(visitor, dt_string)
 	
-
-
-
-
+#enter choice
 print('1. checkin visitor')
 print('2. checkout visitor')
 
