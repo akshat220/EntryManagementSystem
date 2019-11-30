@@ -1,6 +1,7 @@
 from datetime import datetime
 import mysql.connector
 import config
+import config1
 import smtplib
 from twilio.rest import Client
 
@@ -59,14 +60,14 @@ def send_mail(message, subject, receiver):
 #sending sms using twilio
 def send_sms(message, receiver):
 	try :
-		account_sid = 'ACc2bd47eaaeefdd4152ba8ae2ba25bd15'
-		auth_token = '17ecd90a0349215541904926e1db2941'
+		account_sid = config1.sid
+		auth_token = config1.token
 		client = Client(account_sid, auth_token)
 
 		message = client.messages \
 	    	.create(
 	        	 body= message,
-	         	from_='+12056193680',
+	         	from_=config1.number,
 	         	to= receiver
 	     	)
 		print("message sent to host")
