@@ -80,6 +80,11 @@ Install the following libraries in python:
 1. mysql.connector
 2. twilio.rest
 
+Using the command:
+
+1. ```pip install mysql-connector-python```
+2. ```pip install twilio```
+
 ### Step-2
 
 1. Write the MySQL username and password in ```config3.py``` for connecting to MySQL server.
@@ -95,7 +100,11 @@ Install the following libraries in python:
 
 ### Step-5
 
-1. Run ```db_setup.py``` to create database in your system. (Note: This file should be run only once in a system)
-2. Now run ```main.py``` and select checkin or checkout as required.
+1. Run ```db_setup.py``` using the command
+   ```python db_setup.py```
+   to create database in your system. (Note: This file should be run only once in a system)
+2. Now run ```main.py``` using the command
+   ```python main.py```
+   and select checkin or checkout as required.
 
 
