@@ -1,2 +1,2 @@
-email = "akshataga2210@gmail.com"
-password = "akshat220"
+email = "enter your email here"
+password = "enter password here"
