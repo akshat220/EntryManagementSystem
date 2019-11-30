@@ -11,9 +11,8 @@ This application takes the details from visitor at the time of check-in and trig
 
 1. Python
 2. MySQL
-3. mysql.connector: to connect MySQL with python.
-4. smtplib: to send emails.
-5. twilio: to send messages.
+3. smtplib: to send emails.
+4. twilio: to send messages.
 
 ## Database is designed as follows:
 
