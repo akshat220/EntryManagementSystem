@@ -1,4 +1,4 @@
-# Innovaccer SDE Summer Intern Assignment
+# Entry Management System
 
 In the given project I have made an entry management software.
 The main aim of the project is to store all of the information with time stamp of each entry.
